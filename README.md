@@ -11,17 +11,16 @@ The best way of learning something is actually doing it, I'm learning KDB+ and Q
 It is developed and tested on MacOS only at this monment.
 
 Steps for installation and verification:
+
 1. Download and install KDB+ personal edition on default path;
 2. Download/Clone the repository;
 3. Edit global.q to modify data directories accordingly;
-4. Run server from command line
-    ./q qex/qex.q -p 5000
-5. Run client from another command line
-    ./q
+4. Run server from command line: ./q qex/qex.q -p 5000
+5. Run client from another command line: ./q
 6. Test in KDB+ console
-    h:hopen (`::5000:brokera:password)
-    o:(`sym`side`otype`timeinforce`osize`limitprice) ! (`ABC;`BUY;`LIMIT;`GOODFORDAY;100;500)
-    h(`.qex.Submit; `NEW; o)
+7.      h:hopen (`::5000:brokera:password)
+8.      o:(`sym`side`otype`timeinforce`osize`limitprice) ! (`ABC;`BUY;`LIMIT;`GOODFORDAY;100;500)
+9.      h(`.qex.Submit; `NEW; o)
 
 ## Usage
 
