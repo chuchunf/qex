@@ -1,33 +1,47 @@
 ## Synopsis
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+A equity exchange implemented in Q running on KDB+.
 
 ## Motivation
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
+The best way of learning something is actually doing it, I'm learning KDB+ and Q by implementing a fully featured exchange. Feactures/TODOs will be changed/udpated as I progress.
 
 ## Installation
 
-Provide code examples and explanations of how to get the project.
+It is developed and tested on MacOS only at this monment.
+
+Steps for installation and verification:
+1. Download and install KDB+ personal edition on default path;
+2. Download/Clone the repository;
+3. Edit global.q to modify data directories accordingly;
+4. Run server from command line
+    ./q qex/qex.q -p 5000
+5. Run client from another command line
+    ./q
+6. Test in KDB+ console
+    h:hopen (`::5000:brokera:password)
+    o:(`sym`side`otype`timeinforce`osize`limitprice) ! (`ABC;`BUY;`LIMIT;`GOODFORDAY;100;500)
+    h(`.qex.Submit; `NEW; o)
 
 ## Usage
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
+TO be added.
 
 ## Tests
 
-Describe and show how to run the tests with code examples.
+TO be added.
 
 ## Performance Tests
 
+TO be added.
+
 ## TODO
-1. Logging
-2. Coding style check
-3. Unit testing
-4. Refactor code to use vector language style instead of procedure
-5. More client APIs (Market data)
-6. A market maker implementation
-7. A member implementation (algo trading)
-8. Performance Testing
+1. Coding style check
+2. Unit testing
+3. Refactor code to use vector language style instead of procedure
+4. More client APIs (Market data)
+5. A market maker implementation
+6. A member implementation (algo trading)
+7. Performance Testing
 
 ## Change History

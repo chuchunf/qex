@@ -14,12 +14,13 @@ Bootstrap : {
         orderdata   : `$`.[`DATADIR] , (string yesterday) , "/" , `.[`ORDERDATA]; 
         if[count key orderdata;
             orders      : get orderdata;
+            show orders;
              / update order accordingly
-            delete from `orders where status in `FILLED`FAILED`CANCELLED;
-            delete from `orders where timeinforce=`GOODFORDAY;
-            delete from `orders where timeinforce in `GOODAFTER`GOODTILCANCEL, z.z>effdate+90;
-            delete from `orders where timeinforce=`GOODTIL, z.z>effdate;
-            update otype=`LIMIT from `orders where timeinforce=`GOODAFTER, z.z>effdate
+            orders: delete from orders where status in `FILLED`FAILED`CANCELLED;
+            orders: delete from orders where timeinforce=`GOODFORDAY;
+            orders: delete from orders where timeinforce in `GOODAFTER`GOODTILCANCEL, .z.z>effdate+90;
+            orders: delete from orders where timeinforce=`GOODTIL, .z.z>effdate;
+            orders: update otype=`LIMIT from orders where timeinforce=`GOODAFTER, .z.z>effdate
             / insert into RDB
             `.schema.Orders insert select from orders;
         ];
@@ -42,6 +43,7 @@ Bootstrap : {
         $[seq<=0; :1; :seq];
     }
 
+/**********************************************************
 / all incoming orders will be log for recovery
 logHandler : 0
 LogOrder : {[order]
@@ -68,6 +70,16 @@ ProcessEndOfDay : {
         tradedat set .schema.Trades;
     
         hdel `.[`ORDERLOG];
+    }
+
+/**********************************************************
+/ log information in the console 
+Info : {[msg; arg]
+        1 "[" , (string .z.Z) , "] ";
+        $[100=type arg; 
+            [show msg; show value arg];
+            [show msg; show arg]
+        ];
     }
 
 \d .

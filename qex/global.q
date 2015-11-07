@@ -34,7 +34,8 @@ TIMEINFORCE :   (`GOODFORDAY;       / valid to the day's trading session
                 `IMMEDIATEORCANCEL; / fill immediately or cancel, allow partially fill
                 `FILLORKILL;        / fill immediately or cancel, full fill only
                 `GOODTILL;          / order effective till specified date
-                `GOODAFTER);        / order effective only after specified date
+                `GOODAFTER;         / order effective only after specified date
+                `NIL);
 
 ORDERSTATUS :   (`NEW;          / begining of life cycle
                 `PARTIALFILLED; / partially filled

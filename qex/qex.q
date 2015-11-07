@@ -66,6 +66,7 @@ getNewTrade[`SELL] : {[order; orders]
 matchOrder: {[order]
         matching : listMatchableOrder [order[`side]][order];
         if[not count matching; :`OK]
+        .logger.Info["matching orders"][count matching];
 
         matched: update tradesize:0 from delete from matching;
 
@@ -97,6 +98,7 @@ matchOrder: {[order]
              // remove 1st row
              matching : 1 _ matching;
         ];
+        .logger.Info["matched orders"][matched];
 
         // abort if results in a partial fill for FILLORKILL 
         if[(order[`osize]>0) and (order[`otype]=`LIMIT) and order[`timeinforce]=`FILLORKILL; :`OK];
@@ -109,6 +111,7 @@ matchOrder: {[order]
                
         // insert trades
         trades : getNewTrade [order[`side]] [order] [matched];
+        .logger.Info["creating trades"][trades];
 
         `.schema.Trades insert select sym, osize, price, buyorder, sellorder, time, day from trades;
 
@@ -129,10 +132,11 @@ listStopOrder[`SELL] : {[order]
     }
 
 triggerStopOrder:{[order]
+        .logger.Info["trigger stop order"][order[`limitprice]];
         matching: listStopOrder[order[`side]][order];
         if[not count matching; :`OK];
-        update type=`MARKET from `.schema.Orders 
-            where id in select id from matching;
+        update type=`MARKET from `.schema.Orders where id in select id from matching;
+        .logger.Info["number of order triggered"][count matching];
     }
 
 /*******************************************************
@@ -141,6 +145,8 @@ commandFactory  : (`ORDERCMD$()) ! ()     / factory of commands
 
 / Sumbit a new order, expect order as a dictionary; return order id for tracking
 commandFactory[`NEW] : {[order]
+        .logger.Info["new order"][order];
+
         if[.z.w<>0; order[`mid] : .member.GetMember []];    /recovery will has mid set
         if[not order[`mid]; :`INVALID_MEMBER];
         if[not validateOrder[order]; :`INVALID_ORDER];
@@ -150,12 +156,15 @@ commandFactory[`NEW] : {[order]
         if[null order[`limitprice]; order[`limitprice] : 0];
         if[null order[`stopproce]; order[`stopprice] : 0];
         if[null order[`effdate]; order[`effdate] : 0];
-        
+        if[null order[`timeinforce]; order[`timeinforce] : `NIL];
+        .logger.Info["order valided and decorated"][order];
+ 
         `.schema.Orders insert (order[`id]; order[`mid]; order[`sym]; order[`side]; 
                             order[`otype]; order[`timeinforce]; order[`osize]; 
                             order[`limitprice]; order[`stopprice]; order[`effdate]; 
                             `NEW; insertts; `.[`TODAY]);
         if[.z.w<>0; .logger.LogOrder [update command:`NEW from .schema.Orders where id = .qex.seq]];
+        .logger.Info["order logged for session"][.z.w];
         
         if[order[`otype] in `LIMIT`MARKET; 
             if[order[`otype]=`LIMIT;         
@@ -164,11 +173,14 @@ commandFactory[`NEW] : {[order]
             rebuildQuotes[order[`side]][order];
             .member.BroadCast [select from .schema.Quotes where sym=order[`sym]];
         ];
+        .logger.Info["order done, return sequence"][seq];
         $[.z.w<>0; :seq; :0];
     }
 
 / Cancel an existing order
 commandFactory[`CANCEL] : {[order]
+        .logger.Info["cancel order"][order];
+
         if[.z.w<>0; order[`mid] : .member.GetMember []];    /recovery will has mid set
         dborder : select from .schema.Orders where mid=order[`mid], id=order[`id], status=`NEW;
         if[not count dborder; :`INVALID_ORDER_STATUS];
@@ -188,6 +200,8 @@ commandFactory[`CANCEL] : {[order]
 
 / Modify an existing order    
 commandFactory[`MODIFY] : {[order]
+        .logger.Info["modify order"][order];
+
         if[.z.w<>0; order[`mid] : .member.GetMember []];    /recovery will has mid set
         dborder: select from .schema.Orders where mid=order[`mid], id=order[`id], status=`NEW;
         if[not count dborder; :`INVALID_ORDER_STATUS];
