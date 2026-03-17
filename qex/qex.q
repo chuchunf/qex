@@ -65,7 +65,7 @@ getNewTrade[`SELL] : {[order; orders]
     
 matchOrder: {[order]
         matching : listMatchableOrder [order[`side]][order];
-        if[not count matching; :`OK]
+        if[not count matching; :`OK];
         .logger.Info["matching orders"][count matching];
 
         matched: update tradesize:0 from delete from matching;

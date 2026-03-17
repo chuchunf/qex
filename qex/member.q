@@ -12,13 +12,17 @@ memberid: 0                             / placeholder for member id
 .z.pw: {[username;password]
         if[not .qex.ready; :0b];
         memberid:: first exec id from .schema.Members where name=username, md5sum=`$raze string -15!password;
-        if[(`.[`STARTTIME]>`hh$.z.Z) or (`.[`ENDTIME]-1)<`hh$.z.Z; :0b]
+        if[(`.[`STARTTIME]>`hh$.z.Z) or (`.[`ENDTIME]-1)<`hh$.z.Z; 
+            .logger.Info["Trading time not open"];
+            :0b
+        ];
 
         $[memberid>0; :1b; :0b]
     }
     
 .z.po: {[pid]
-       members[pid]: memberid
+       members[pid]: memberid;
+       memberid
     }
 
 .z.pc: {[pid]
