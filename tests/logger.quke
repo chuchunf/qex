@@ -1,0 +1,19 @@
+feature .logger
+
+    before
+        system "cd qex"
+
+    before
+        system "l global.q"
+
+    before
+        system "l schema.q"
+
+    before
+        system "l logger.q"
+
+    should "log successfully when no data present" 
+        expect "return seq as 1"
+            .logger.Bootstrap[] = 1b;
+
+
