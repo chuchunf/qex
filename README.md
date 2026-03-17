@@ -18,8 +18,8 @@ Steps for installation and verification:
 4. Run server from command line: ./q qex/qex.q -p 5000
 5. Run client from another command line: ./q
 6. Test in KDB+ console
-```
-h:hopen (`::5000:brokera:password)
+```q
+h:hopen (`::5000:`brokera:`password)
 
 o1:(`sym`side`otype`osize) ! (`ABC;`BUY;`MARKET;100)
 
@@ -33,8 +33,8 @@ h(`.qex.Submit; `CANCEL; o)
 
 ```
 7. Open another console as brokerb
-```
-h:hopen (`::5000:brokerb:password)
+```q
+h:hopen (`::5000:`brokerb:`password)
 
 o1:(`sym`side`otype`osize) ! (`ABC;`SELL;`MARKET;10)
 
@@ -64,11 +64,11 @@ Use qCumber to run the test, assume KX developer is installed at $AXLIBRARIES_HO
 TO be added.
 
 ## TODO
-[x] 1. Coding style check
-[ ] 2. Unit testing
-[ ] 3. Refactor code to use vector language style instead of procedure
-[ ] 4. More client APIs (Market data)
-[ ] 5. A market maker implementation
-[ ] 6. A member implementation (algo trading)
-[ ] 7. Performance Testing
+- [x] Coding style check
+- [ ] Unit testing
+- [ ] Refactor code to use vector language style instead of procedure
+- [ ] More client APIs (Market data)
+- [ ] A market maker implementation
+- [ ] A member implementation (algo trading)
+- [ ] Performance Testing
 
