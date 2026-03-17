@@ -12,7 +12,7 @@ feature .logger
     before
         system "l logger.q"
 
-    should "log successfully when no data present" 
+    should "bootstrap successfully when no data present" 
         expect "return seq as 1"
             .logger.Bootstrap[] = 1b;
 
