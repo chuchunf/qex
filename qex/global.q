@@ -8,8 +8,8 @@ STARTTIME   : 9
 ENDTIME     : 23
 TODAY       : `int$(`dd$.z.Z) + (100*`mm$.z.Z) + 10000*`year$.z.Z
 
-BASEDIR     : ":/Users/chuchunf/q/m32/"
-QEXDIR      : "qex/data/"
+BASEDIR     : system "cd"
+QEXDIR      : "/data/"
 DATADIR     : BASEDIR,QEXDIR
 ORDERLOG    : `$DATADIR,"orders.log"
 ORDERDATA   : "orders.dat"
