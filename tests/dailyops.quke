@@ -1,4 +1,4 @@
-feature .logger
+feature .dailyops
 
     before
         system "cd qex"
@@ -15,7 +15,7 @@ feature .logger
     before
         system "l dailyops.q"
 
-    should "bootstrap successfully when no data present" 
+    should "ProcessStartOfDay successfully when no data present" 
         expect "return seq as 1"
             .dailyops.ProcessStartOfDay[] = 1b;
 
