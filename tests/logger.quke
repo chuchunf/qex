@@ -12,8 +12,11 @@ feature .logger
     before
         system "l logger.q"
 
+    before
+        system "l dailyops.q"
+
     should "bootstrap successfully when no data present" 
         expect "return seq as 1"
-            .logger.Bootstrap[] = 1b;
+            .dailyops.ProcessStartOfDay[] = 1b;
 
 

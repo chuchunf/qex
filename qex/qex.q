@@ -6,6 +6,7 @@
 \l schema.q
 \l member.q
 \l logger.q
+\l dailyops.q
 
 \d .qex
 
@@ -234,7 +235,7 @@ Submit : {[command; order]
 
 /*******************************************************
 / Bootstrap
-seq         : .logger.Bootstrap []     / load order and trade, set seq
+seq         : .dailyops.ProcessStartOfDay []     / load order and trade, set seq
 ready       : 1b
 
 \d .
