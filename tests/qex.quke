@@ -11,4 +11,5 @@ feature .dailyops
 
     should "be able to validate an order before anythng else" 
         expect "failed if order missing mandatory field"
-            1b;
+            o:(`sym1`side1`otype1`osize1) ! (`ABC;`BUY;`MARKET;100);
+            .qex.validateOrder[o] = 0b;
