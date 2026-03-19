@@ -14,11 +14,19 @@ LogOrder : {[order]
 
 /**********************************************************
 / log information in the console 
-Info : {[msg; arg]
+Info : {[args]
         1 "[" , (string .z.Z) , "] ";
-        $[100=type arg; 
-            [show msg; show value arg];
-            [show msg; show arg]
+        $[10h=abs type args; 
+            show args;
+        2=count args;
+            [
+                msg: args 0; arg: args 1;
+                $[100h=type arg; 
+                    show msg, ", ", value arg;
+                    show msg, ", ", arg
+                ]
+            ];
+            show args
         ];
     }
 

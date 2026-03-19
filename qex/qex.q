@@ -1,7 +1,6 @@
 /*******************************************************
 / Exchange implemenation                                
 /*******************************************************
-\cd qex
 \l global.q
 \l schema.q
 \l member.q
@@ -232,10 +231,5 @@ commandFactory[`QUOTE] : {[sym]
 Submit : {[command; order]
         :commandFactory [command] [order];
     }
-
-/*******************************************************
-/ Bootstrap
-seq         : .dailyops.ProcessStartOfDay []     / load order and trade, set seq
-ready       : 1b
 
 \d .
