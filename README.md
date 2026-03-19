@@ -1,10 +1,10 @@
 ## Synopsis
 
-A equity exchange implemented in Q running on KDB+.
+A equity exchange order matching engine implemented in Q running on KDB+.
 
 ## Motivation
 
-The best way of learning something is actually doing it, I'm learning KDB+ and Q by implementing a fully featured exchange. Feactures/TODOs will be changed/udpated as I progress.
+The best way of learning something is actually doing it, I'm learning KDB+ and Q by implementing a fully featured exchange order matching engine. Feactures/TODOs will be changed/udpated as I progress.
 
 ## Installation
 
@@ -15,7 +15,7 @@ Steps for installation and verification:
 1. Download and install KDB+ personal edition on default path;
 2. Download/Clone the repository;
 3. Edit global.q to modify data directories accordingly;
-4. Run server from command line: ./q qex/qex.q -p 5000
+4. Run server from command line: ./q qex/main.q -p 5000
 5. Run client from another command line: ./q
 6. Test in KDB+ console
 ```q
@@ -71,4 +71,6 @@ TO be added.
 - [ ] A market maker implementation
 - [ ] A member implementation (algo trading)
 - [ ] Performance Testing
+- [ ] GUI
+- [ ] use CUDA for performance optimization
 
