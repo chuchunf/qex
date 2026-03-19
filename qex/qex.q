@@ -32,7 +32,7 @@ orderMandatoryFields[`LIMIT]    : `limitprice
 orderMandatoryFields[`STOP]     : `stopprice
 
 validateOrder: {[order]
-        if[all null order[allMandatoryFields]; :0b];
+        if[any null order[allMandatoryFields]; :0b];
         if[(order[`otype]<>`MARKET) and all null order[orderMandatoryFields[order[`otype]]]; :0b];
         if[(order[`timeinforce] in `GOODTILL`GOODAFTER) and null order[`effdate]; :0b];
         :1b;

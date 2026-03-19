@@ -1,15 +1,23 @@
 feature .dailyops
 
-    before {
-        system "cd qex";
-        system "l global.q";
-        system "l schema.q";
-        system "l logger.q";
-        system "l dailyops.q";
-    }
+    before
+        system "cd qex"
+
+    before
+        system "l global.q"
+
+    before
+        system "l schema.q"
+
+    before
+        system "l logger.q"
+
+    before
+        system "l dailyops.q"
+
+    after
+        system "cd .."
 
     should "ProcessStartOfDay successfully when no data present" 
         expect "return seq as 1"
             .dailyops.ProcessStartOfDay[] = 1b;
-
-

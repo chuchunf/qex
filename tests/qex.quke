@@ -1,0 +1,14 @@
+feature .dailyops
+
+    before 
+        system "cd qex"
+
+    before
+        system "l qex.q"
+    
+    after
+        system "cd .."
+
+    should "be able to validate an order before anythng else" 
+        expect "failed if order missing mandatory field"
+            1b;
