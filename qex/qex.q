@@ -33,7 +33,7 @@ orderMandatoryFields[`STOP]     : `stopprice
 
 validateOrder: {[order]
         if[any null order[allMandatoryFields]; :0b];
-        if[(order[`otype]<>`MARKET) and all null order[orderMandatoryFields[order[`otype]]]; :0b];
+        if[(order[`otype]<>`MARKET) and any null order[orderMandatoryFields[order[`otype]]]; :0b];
         if[(order[`timeinforce] in `GOODTILL`GOODAFTER) and null order[`effdate]; :0b];
         :1b;
     }
@@ -107,6 +107,7 @@ matchOrder: {[order]
         `.schema.Orders upsert delete tradesize from matched;
 
         // update order table for new order
+        show order;
         update osize:order[`osize], status:order[`status] from `.schema.Orders where id=order[`id];
                
         // insert trades

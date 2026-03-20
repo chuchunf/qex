@@ -46,3 +46,8 @@ feature .dailyops
             o:(`sym`side`otype`osize`limitprice) ! (`ABC;`BUY;`LIMIT;100;100);
             1 = count .qex.listMatchableOrder[`BUY][o];
 
+    should "be able to match orders"
+        expect "match a market order with market order"
+            if[not count .schema.Orders; `.schema.Orders insert (1;1;`ABC;`SELL;`MARKET;`NIL;100;0N;0N;0N;`NEW;.z.Z;`.[`TODAY])]
+            o:(`id`sym`side`otype`osize`limitprice`timeinforce) ! (1;`ABC;`BUY;`MARKET;100;0N;`NIL);
+            `OK = .qex.matchOrder[o];
