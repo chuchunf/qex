@@ -11,5 +11,38 @@ feature .dailyops
 
     should "be able to validate an order before anythng else" 
         expect "failed if order missing mandatory field"
-            o:(`sym1`side1`otype1`osize1) ! (`ABC;`BUY;`MARKET;100);
+            o:(`sym1`side`otype`osize) ! (`ABC;`BUY;`MARKET;100);
             .qex.validateOrder[o] = 0b;
+            o:(`sym`side1`otype`osize) ! (`ABC;`BUY;`MARKET;100);
+            .qex.validateOrder[o] = 0b;
+            o:(`sym`side`otype1`osize) ! (`ABC;`BUY;`MARKET;100);
+            .qex.validateOrder[o] = 0b;
+            o:(`sym`side`otype`osize1) ! (`ABC;`BUY;`MARKET;100);
+            .qex.validateOrder[o] = 0b;
+
+        expect "failed if limit order missing limitprice"
+            o:(`sym`side`otype`osize) ! (`ABC;`BUY;`LIMIT;100);
+            .qex.validateOrder[o] = 0b;
+
+        expect "failed if stop order missing stopprice"
+            o:(`sym`side`otype`osize) ! (`ABC;`BUY;`STOP;100);
+            .qex.validateOrder[o] = 0b;
+
+        expect "failed if timeinforce is GOODTILL or GOODAFTER but missing effdate"
+            o:(`sym`side`otype`osize`timeinforce) ! (`ABC;`BUY;`LIMIT;100;`GOODTILL);
+            .qex.validateOrder[o] = 0b;
+            o:(`sym`side`otype`osize`timeinforce) ! (`ABC;`BUY;`LIMIT;100;`GOODAFTER);
+            .qex.validateOrder[o] = 0b;
+
+    should "be able to list matchable orders"
+        expect "nothing if there is no order in the market"
+            o:(`sym`side`otype`osize`limitprice) ! (`ABC;`BUY;`LIMIT;100;100);
+            0 = count .qex.listMatchableOrder[`BUY][o];
+            o:(`sym`side`otype`osize`limitprice) ! (`ABC;`SELL;`LIMIT;100;100);
+            0 = count .qex.listMatchableOrder[`SELL][o];
+
+        expect "return matchable orders if available"
+            `.schema.Orders insert (1;1;`ABC;`SELL;`LIMIT;`NIL;100;100;1;1;`NEW;.z.Z;`.[`TODAY]);
+            o:(`sym`side`otype`osize`limitprice) ! (`ABC;`BUY;`LIMIT;100;100);
+            1 = count .qex.listMatchableOrder[`BUY][o];
+
